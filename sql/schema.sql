@@ -1,17 +1,18 @@
--- wrangler d1 execute acu-react-production-database --file schema.sql --remote
+-- wrangler d1 execute care_db --file schema.sql --remote
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS navigation_items;
-DROP TABLE IF EXISTS endpoints;
-DROP TABLE IF EXISTS endpoint_columns;
+
 
 -- CREATE TABLE QUERIES 
 CREATE TABLE users (
     id TEXT NOT NULL,
     first_name TEXT,
     last_name TEXT,
+    email TEXT NOT NULL,
+    user_type TINYINT(1) NOT NULL CHECK (enabled IN (1, 2)),
+    service_type TINYINT(1) NOT NULL CHECK (enabled IN (1, 2)),
     enabled TINYINT(1) NOT NULL DEFAULT 0 CHECK (enabled IN (0, 1)),
-    created_at DATETIME,
-    updated_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY ('id')
 );
 
