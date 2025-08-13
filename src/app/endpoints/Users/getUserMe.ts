@@ -25,7 +25,7 @@ export class GetUserMe extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the current users',
+        description: 'Returns the current user',
         content: {
           'application/json': {
             schema: z.object({

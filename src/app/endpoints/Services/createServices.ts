@@ -26,7 +26,7 @@ export class CreateServices extends OpenAPIRoute {
     },
     responses: {
       200: {
-        description: 'Returns a created service',
+        description: 'Returns the created service',
         content: {
           'application/json': {
             schema: z.object({

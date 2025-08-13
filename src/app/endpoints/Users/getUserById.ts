@@ -23,7 +23,7 @@ export class GetUserById extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns a list of users',
+        description: 'Returns user by id',
         content: {
           'application/json': {
             schema: z.object({
