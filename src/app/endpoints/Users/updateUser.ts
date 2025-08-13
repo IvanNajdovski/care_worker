@@ -1,17 +1,19 @@
-import { Bool, Num, OpenAPIRoute, Str } from 'chanfana';
+import { Bool, OpenAPIRoute, Str } from 'chanfana';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, UpdateUserBody, User } from '@/models/zod/types';
-import { createSQLValuesAndSQLStrings, parseReqBodyAndFilter } from '@/utils';
+import { AppContext, UpdateUserBody, User } from '@/models/zod';
 
 export class UpdateUser extends OpenAPIRoute {
   schema = {
-    tags: ['Users'],
     summary: 'Update User',
+    tags: ['Users'],
     request: {
+      headers: z.object({
+        authorization: z.string().startsWith('Bearer ').describe('Authorization JWT token'),
+      }),
       params: z.object({
         user_id: Str({ description: 'User id' }),
       }),
@@ -50,8 +52,8 @@ export class UpdateUser extends OpenAPIRoute {
       email: string | null;
       userType: number | null;
       serviceType: number | null;
-      enabled: number | null;
-      updatedAt: string;
+      enabled: boolean | null;
+      updated_at: string;
     }> = {};
 
     // Conditionally add properties if they exist in `body`
@@ -63,7 +65,7 @@ export class UpdateUser extends OpenAPIRoute {
     if ('enabled' in body) updateData.enabled = body.enabled;
 
     // Always update updatedAt
-    updateData.updatedAt = new Date().toISOString();
+    updateData.updated_at = new Date().toISOString();
 
     await db.update(users).set(updateData).where(eq(users.id, params.user_id));
 

@@ -1,21 +1,25 @@
-import { Bool, Num, OpenAPIRoute } from 'chanfana';
+import bcrypt from 'bcryptjs';
+import { Bool, OpenAPIRoute } from 'chanfana';
 import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, User } from '@/models/zod/types';
+import { AppContext, RegisterUserBody, User } from '@/models/zod';
 
 export class CreateUser extends OpenAPIRoute {
   schema = {
-    tags: ['Users'],
     summary: 'Create User',
+    tags: ['Users'],
     request: {
+      headers: z.object({
+        authorization: z.string().startsWith('Bearer ').describe('Authorization JWT token'),
+      }),
       body: {
         content: {
           'application/json': {
-            schema: User,
+            schema: RegisterUserBody,
           },
         },
       },
@@ -36,21 +40,24 @@ export class CreateUser extends OpenAPIRoute {
   };
 
   async handle(c: AppContext) {
-    const body = (await this.getValidatedData<typeof this.schema>()).body;
+    const { password, ...body } = (await this.getValidatedData<typeof this.schema>()).body;
     const userUUID = uuidv4();
     const db = getDB(c.env);
+
+    const passwordHash = await bcrypt.hash(password, 10);
     await db.insert(users).values({
       id: userUUID,
-      firstName: body.first_name,
-      lastName: body.last_name ?? null,
+      first_name: body.first_name,
+      last_name: body.last_name ?? null,
       email: body.email ?? null,
-      userType: body.user_type ?? null,
-      serviceType: body.service_type ?? null,
-      enabled: body.enabled ?? 0, // default to 0 if nullish
+      password_hash: passwordHash,
+      user_type: body.user_type ?? null,
+      service_type: body.service_type ?? null,
+      enabled: true,
     });
 
     // Then fetch the inserted user by id
-    const [insertedUser] = await db.select().from(users).where(eq(users.id, userUUID));
+    const insertedUser = await db.select().from(users).where(eq(users.id, userUUID)).get();
     return { success: true, data: insertedUser };
   }
 }

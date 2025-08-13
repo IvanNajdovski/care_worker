@@ -1,16 +1,17 @@
-import { Bool, Num, OpenAPIRoute, Str } from 'chanfana';
-import { eq } from 'drizzle-orm';
+import { Bool, OpenAPIRoute, Str } from 'chanfana';
 import { z } from 'zod';
 
-import { getDB } from '@/db/db';
-import { users } from '@/db/schema';
-import { AppContext, User } from '@/models/zod/types';
+import { getUserWithRoles } from '@/db/queries/userQueries/getUserWithRoles.query';
+import { AppContext, User } from '@/models/zod';
 
 export class GetUserById extends OpenAPIRoute {
   schema = {
-    tags: ['Users'],
     summary: 'Get User',
+    tags: ['Users'],
     request: {
+      headers: z.object({
+        authorization: z.string().startsWith('Bearer ').describe('Authorization JWT token'),
+      }),
       params: z.object({
         user_id: Str({
           description: 'User Id',
@@ -36,10 +37,8 @@ export class GetUserById extends OpenAPIRoute {
   async handle(c: AppContext) {
     const { user_id } = (await this.getValidatedData<typeof this.schema>()).params;
 
-    const db = getDB(c.env);
+    const user = await getUserWithRoles(c.env, user_id);
 
-    const user = await db.select().from(users).where(eq(users.id, user_id)).limit(1);
-
-    return { success: true, data: user[0] ?? null };
+    return { success: true, data: user ?? null };
   }
 }

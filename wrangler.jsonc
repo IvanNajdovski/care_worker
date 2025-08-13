@@ -7,6 +7,7 @@
   "name": "care-worker",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-07",
+  // "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true,
   },
@@ -17,6 +18,12 @@
       "database_id": "daa7d186-f090-49c2-89e6-dc17b4abd989",
     },
   ],
+  "vars": {
+    // R2 API VARIABLES
+    "RESEND_API_KEY": "re_N8K1pfDk_NqnggMBrYfwGJeNE3r7fwkkB",
+    "JWT_SECRET": "care_app-babysitter",
+  },
+  // re_N8K1pfDk_NqnggMBrYfwGJeNE3r7fwkkB
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
