@@ -20,7 +20,7 @@ export class DeleteUser extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the deleted user',
+        description: 'Returns deleted user',
         content: {
           'application/json': {
             schema: z.object({

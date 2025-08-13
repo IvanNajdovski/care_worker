@@ -26,7 +26,7 @@ export class CreateUser extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns a created user',
+        description: 'Returns created user',
         content: {
           'application/json': {
             schema: z.object({

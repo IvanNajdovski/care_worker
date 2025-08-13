@@ -27,7 +27,7 @@ export class UpdateUser extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the updated user',
+        description: 'Returns updated user',
         content: {
           'application/json': {
             schema: z.object({

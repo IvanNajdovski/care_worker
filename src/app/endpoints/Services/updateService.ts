@@ -28,7 +28,7 @@ export class UpdateServices extends OpenAPIRoute {
     },
     responses: {
       200: {
-        description: 'Returns the updated service',
+        description: 'Returns updated service',
         content: {
           'application/json': {
             schema: z.object({

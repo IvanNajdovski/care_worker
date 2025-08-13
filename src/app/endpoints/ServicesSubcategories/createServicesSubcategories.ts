@@ -26,7 +26,7 @@ export class CreateServicesSubcategory extends OpenAPIRoute {
     },
     responses: {
       200: {
-        description: 'Returns the created service subcategory',
+        description: 'Returns created service subcategory',
         content: {
           'application/json': {
             schema: z.object({

@@ -21,7 +21,7 @@ export class DeleteService extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the deleted service',
+        description: 'Returns deleted service',
         content: {
           'application/json': {
             schema: z.object({

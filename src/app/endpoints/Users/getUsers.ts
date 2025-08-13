@@ -27,7 +27,7 @@ export class GetUsers extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns a list of users',
+        description: 'Returns list of users',
         content: {
           'application/json': {
             schema: z.object({

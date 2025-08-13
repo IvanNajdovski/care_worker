@@ -22,7 +22,7 @@ export class VerifyUserEmail extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the user authorization token',
+        description: 'Returns user authorization token',
         content: {
           'application/json': {
             schema: z.object({

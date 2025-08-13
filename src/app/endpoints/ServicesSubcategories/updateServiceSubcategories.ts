@@ -28,7 +28,7 @@ export class UpdateServicesSubcategory extends OpenAPIRoute {
     },
     responses: {
       200: {
-        description: 'Returns the updated service subcategory',
+        description: 'Returns updated service subcategory',
         content: {
           'application/json': {
             schema: z.object({

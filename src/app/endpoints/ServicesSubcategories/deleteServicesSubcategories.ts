@@ -21,7 +21,7 @@ export class DeleteServiceSubcategory extends OpenAPIRoute {
     },
     responses: {
       '200': {
-        description: 'Returns the deleted service subcategory',
+        description: 'Returns deleted service subcategory',
         content: {
           'application/json': {
             schema: z.object({
