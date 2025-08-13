@@ -1,12 +1,12 @@
 import bcrypt from 'bcryptjs';
 import { Bool, OpenAPIRoute } from 'chanfana';
-import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import { getDB } from '@/db/db';
-import { users } from '@/db/schema';
-import { AppContext, RegisterUserBody, User } from '@/models/zod';
+import { createUserQuery, getUserWithRoles } from '@/db/queries';
+import { AppContext } from '@/models/types';
+import { RegisterUserBody, User } from '@/models/zod';
 
 export class CreateUser extends OpenAPIRoute {
   schema = {
@@ -45,7 +45,7 @@ export class CreateUser extends OpenAPIRoute {
     const db = getDB(c.env);
 
     const passwordHash = await bcrypt.hash(password, 10);
-    await db.insert(users).values({
+    await createUserQuery(db, {
       id: userUUID,
       first_name: body.first_name,
       last_name: body.last_name ?? null,
@@ -57,7 +57,7 @@ export class CreateUser extends OpenAPIRoute {
     });
 
     // Then fetch the inserted user by id
-    const insertedUser = await db.select().from(users).where(eq(users.id, userUUID)).get();
+    const insertedUser = await getUserWithRoles(db, userUUID);
     return { success: true, data: insertedUser };
   }
 }

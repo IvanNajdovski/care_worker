@@ -7,7 +7,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, LoginUserBody } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { LoginUserBody } from '@/models/zod';
 
 export class LoginUser extends OpenAPIRoute {
   schema = {

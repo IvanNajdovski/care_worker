@@ -1,10 +1,10 @@
 import { Bool, Num, OpenAPIRoute } from 'chanfana';
-import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { getDB } from '@/db/db';
-import { users } from '@/db/schema';
-import { AppContext, User } from '@/models/zod';
+import { getUsersWithRoles } from '@/db/queries';
+import { AppContext } from '@/models/types';
+import { User } from '@/models/zod';
 
 export class GetUsers extends OpenAPIRoute {
   schema = {
@@ -41,22 +41,11 @@ export class GetUsers extends OpenAPIRoute {
   };
 
   async handle(c: AppContext) {
-    const { page, enabled } = (await this.getValidatedData<typeof this.schema>()).query;
+    const query = (await this.getValidatedData<typeof this.schema>()).query;
 
     const db = getDB(c.env);
 
-    // Build the query with optional filter
-    let query: any = db.select().from(users);
-
-    if (enabled !== undefined) {
-      query = query.where(eq(users.enabled, enabled ? true : false));
-    }
-
-    // Add pagination (example: page size = 10)
-    const pageSize = 10;
-    query = query.limit(pageSize).offset(page * pageSize);
-
-    const usersList = await query;
+    const usersList = await getUsersWithRoles(db, query);
     return { success: true, data: usersList };
   }
 }

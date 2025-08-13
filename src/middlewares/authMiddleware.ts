@@ -1,7 +1,8 @@
 import { verify } from 'hono/jwt';
 
+import { getDB } from '@/db/db';
 import { getUserWithRoles } from '@/db/queries/userQueries/getUserWithRoles.query';
-import { AppContext } from '@/models/zod';
+import { AppContext } from '@/models/types';
 
 export const authMiddleware = async (c, next) => {
   try {
@@ -23,7 +24,8 @@ export const isAdminMiddleware = async (c: AppContext, next) => {
     const userPayload = c.get('user');
 
     if (userPayload?.role) {
-      const user = await getUserWithRoles(c.env, userPayload.user_id);
+      const db = getDB(c.env);
+      const user = await getUserWithRoles(db, userPayload.user_id);
 
       if (!user || user.role !== 'admin') {
         return c.json({ error: 'Forbidden' }, 403);
@@ -40,7 +42,8 @@ export const isServiceProviderMiddleware = async (c: AppContext, next) => {
     const userPayload = c.get('user');
 
     if (userPayload?.role) {
-      const user = await getUserWithRoles(c.env, userPayload.user_id);
+      const db = getDB(c.env);
+      const user = await getUserWithRoles(db, userPayload.user_id);
 
       if (!user || user.role !== 'service_provider') {
         return c.json({ error: 'Forbidden' }, 403);
@@ -57,7 +60,8 @@ export const isServiceClientMiddleware = async (c: AppContext, next) => {
     const userPayload = c.get('user');
 
     if (userPayload?.role) {
-      const user = await getUserWithRoles(c.env, userPayload.user_id);
+      const db = getDB(c.env);
+      const user = await getUserWithRoles(db, userPayload.user_id);
 
       if (!user || user.role !== 'service_client') {
         return c.json({ error: 'Forbidden' }, 403);

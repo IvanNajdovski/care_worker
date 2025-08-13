@@ -1,10 +1,10 @@
 import { Bool, OpenAPIRoute, Str } from 'chanfana';
-import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { getDB } from '@/db/db';
-import { users } from '@/db/schema';
-import { AppContext, User } from '@/models/zod';
+import { deleteUserQuery, getUserWithRoles } from '@/db/queries';
+import { AppContext } from '@/models/types';
+import { User } from '@/models/zod';
 
 export class DeleteUser extends OpenAPIRoute {
   schema = {
@@ -37,13 +37,13 @@ export class DeleteUser extends OpenAPIRoute {
     const { user_id } = (await this.getValidatedData<typeof this.schema>()).params;
     const db = getDB(c.env);
 
-    const userToDelete = await db.select().from(users).where(eq(users.id, user_id)).get();
+    const userToDelete = await getUserWithRoles(db, user_id);
 
     if (!userToDelete) {
       return c.json({ error: 'User not found' }, 404);
     }
 
-    await db.delete(users).where(eq(users.id, user_id));
+    await deleteUserQuery(db, user_id);
 
     return { success: true, data: userToDelete };
   }

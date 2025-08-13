@@ -13,6 +13,6 @@ export type CustomContext = {
   user?: IJwtUserPayload;
 };
 
-export type HonoAppContext = { Bindings: ExtendedEnv; State: CustomContext };
+export type HonoAppContext = { Bindings: ExtendedEnv; Variables: CustomContext };
 
 export type AppContext = Context<HonoAppContext>;

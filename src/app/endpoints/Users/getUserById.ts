@@ -1,8 +1,10 @@
 import { Bool, OpenAPIRoute, Str } from 'chanfana';
 import { z } from 'zod';
 
+import { getDB } from '@/db/db';
 import { getUserWithRoles } from '@/db/queries/userQueries/getUserWithRoles.query';
-import { AppContext, User } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { User } from '@/models/zod';
 
 export class GetUserById extends OpenAPIRoute {
   schema = {
@@ -36,8 +38,8 @@ export class GetUserById extends OpenAPIRoute {
 
   async handle(c: AppContext) {
     const { user_id } = (await this.getValidatedData<typeof this.schema>()).params;
-
-    const user = await getUserWithRoles(c.env, user_id);
+    const db = getDB(c.env);
+    const user = await getUserWithRoles(db, user_id);
 
     return { success: true, data: user ?? null };
   }

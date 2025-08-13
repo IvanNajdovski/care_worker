@@ -1,9 +1,11 @@
 import { Bool, OpenAPIRoute } from 'chanfana';
 import { z } from 'zod';
 
+import { getDB } from '@/db/db';
 import { getUserWithRoles } from '@/db/queries/userQueries/getUserWithRoles.query';
 import { IJwtUserPayload } from '@/models/interfaces';
-import { AppContext, UpdateUserBody, User } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { UpdateUserBody, User } from '@/models/zod';
 
 export class GetUserMe extends OpenAPIRoute {
   schema = {
@@ -41,8 +43,8 @@ export class GetUserMe extends OpenAPIRoute {
     const userPayload: IJwtUserPayload = c.get('user') as unknown as IJwtUserPayload;
 
     if (!userPayload) return c.json({ error: 'Unauthorized' }, 401);
-
-    const user = await getUserWithRoles(c.env, userPayload.user_id);
+    const db = getDB(c.env);
+    const user = await getUserWithRoles(db, userPayload.user_id);
 
     return c.json({ success: true, data: user });
     // }

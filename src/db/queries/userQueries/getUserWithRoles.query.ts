@@ -1,11 +1,9 @@
 import { eq } from 'drizzle-orm';
 
-import { getDB } from '@/db/db';
 import { roles, userRoles, users } from '@/db/schema';
-import { ExtendedEnv } from '@/models/zod';
+import { TDrizzleD1Database } from '@/models/types';
 
-export const getUserWithRoles = async (env: ExtendedEnv, userId: string) => {
-  const db = getDB(env);
+export const getUserWithRoles = async (db: TDrizzleD1Database, userId: string) => {
   return db
     .select({
       id: users.id,
