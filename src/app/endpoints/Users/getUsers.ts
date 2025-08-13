@@ -4,13 +4,16 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, User } from '@/models/zod/types';
+import { AppContext, User } from '@/models/zod';
 
 export class GetUsers extends OpenAPIRoute {
   schema = {
-    tags: ['Users'],
     summary: 'List Users',
+    tags: ['Users'],
     request: {
+      headers: z.object({
+        authorization: z.string().startsWith('Bearer ').describe('Authorization JWT token'),
+      }),
       query: z.object({
         page: Num({
           description: 'Page number',
@@ -46,7 +49,7 @@ export class GetUsers extends OpenAPIRoute {
     let query: any = db.select().from(users);
 
     if (enabled !== undefined) {
-      query = query.where(eq(users.enabled, enabled ? 1 : 0));
+      query = query.where(eq(users.enabled, enabled ? true : false));
     }
 
     // Add pagination (example: page size = 10)
