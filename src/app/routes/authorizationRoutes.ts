@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { fromHono } from 'chanfana';
 
 import { LoginUser, RegisterUser, VerifyUserEmail } from '@/app/endpoints';
-import { HonoAppContext } from '@/models/zod';
+import { HonoAppContext } from '@/models/types';
 
 const authorizationRoutes = fromHono(new Hono<HonoAppContext>());
 

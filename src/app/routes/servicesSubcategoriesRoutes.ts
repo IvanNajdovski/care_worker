@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 
 import { fromHono } from 'chanfana';
 
-import { HonoAppContext } from '@/models/zod';
+import { HonoAppContext } from '@/models/types';
 import { CreateServicesSubcategory, DeleteServiceSubcategory, GetSubcategories, UpdateServicesSubcategory } from '../endpoints';
 
 const servicesSubcategoriesRoutes = fromHono(new Hono<HonoAppContext>());

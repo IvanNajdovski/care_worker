@@ -5,7 +5,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { services } from '@/db/schema';
-import { AppContext, CreateServiceBody, Service } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { CreateServiceBody, Service } from '@/models/zod';
 
 export class CreateServices extends OpenAPIRoute {
   schema = {

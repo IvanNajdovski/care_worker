@@ -4,7 +4,7 @@ import { authMiddleware } from '@/middlewares';
 import { fromHono } from 'chanfana';
 
 import { CreateUser, DeleteUser, GetUserById, GetUserMe, GetUsers, UpdateUser } from '@/app/endpoints';
-import { HonoAppContext } from '@/models/zod';
+import { HonoAppContext } from '@/models/types';
 
 const userRoutes = fromHono(new Hono<HonoAppContext>());
 

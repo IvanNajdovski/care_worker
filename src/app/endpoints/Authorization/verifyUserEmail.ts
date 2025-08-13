@@ -4,7 +4,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, VerifyUserEmailBody } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { VerifyUserEmailBody } from '@/models/zod';
 
 export class VerifyUserEmail extends OpenAPIRoute {
   schema = {

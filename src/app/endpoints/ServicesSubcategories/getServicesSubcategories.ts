@@ -4,7 +4,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { servicesSubcategories } from '@/db/schema';
-import { AppContext, ServiceSubcategory } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { ServiceSubcategory } from '@/models/zod';
 
 export class GetSubcategories extends OpenAPIRoute {
   schema = {

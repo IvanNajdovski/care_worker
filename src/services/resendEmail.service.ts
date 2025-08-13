@@ -1,4 +1,4 @@
-import { AppContext } from '@/models/zod';
+import { AppContext } from '@/models/types';
 
 export class ResendEmailService {
   static sendRegistrationEmail = async (c: AppContext, body, token: string) => {

@@ -4,7 +4,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { servicesSubcategories } from '@/db/schema';
-import { AppContext, Service } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { Service } from '@/models/zod';
 
 export class DeleteServiceSubcategory extends OpenAPIRoute {
   schema = {

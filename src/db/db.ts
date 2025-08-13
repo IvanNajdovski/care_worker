@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 
-import { ExtendedEnv } from '@/models/zod';
+import { ExtendedEnv } from '@/models/types';
 import * as schema from './schema';
 
 export function getDB(env: ExtendedEnv) {

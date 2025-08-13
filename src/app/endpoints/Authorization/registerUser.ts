@@ -8,7 +8,8 @@ import { z } from 'zod';
 
 import { getDB } from '@/db/db';
 import { users } from '@/db/schema';
-import { AppContext, RegisterUserBody } from '@/models/zod';
+import { AppContext } from '@/models/types';
+import { RegisterUserBody } from '@/models/zod';
 
 export class RegisterUser extends OpenAPIRoute {
   schema = {
